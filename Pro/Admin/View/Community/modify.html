@@ -1,0 +1,63 @@
+<!-- 继承Block -->
+<extend name="Block:base" />
+<block name="content">
+<div id="content" class="span10">
+
+
+			<ul class="breadcrumb">
+				<li>
+					<i class="icon-home"></i>
+					<a href="index.html">控制台</a>
+					<i class="icon-angle-right"></i>
+				</li>
+				<li>
+					<i class="icon-edit"></i>
+					<a href="#">Forms</a>
+				</li>
+			</ul>
+
+			<div class="row-fluid sortable">
+				<div class="box span12">
+					<div class="box-header" data-original-title>
+						<h2><i class="halflings-icon edit"></i><span class="break"></span>修改小区信息</h2>
+						<div class="box-icon">
+							<a href="#" class="btn-setting"><i class="halflings-icon wrench"></i></a>
+							<a href="#" class="btn-minimize"><i class="halflings-icon chevron-up"></i></a>
+							<a href="#" class="btn-close"><i class="halflings-icon remove"></i></a>
+						</div>
+					</div>
+					<div class="box-content">
+						<form class="form-horizontal" action="<{:U('Community/update')}>" method="post"  enctype="multipart/form-data" >
+						<input type="hidden" value="<{$user['id']}>" name="id" />
+						<fieldset>
+							<div class="control-group">
+							  <label class="control-label" for="typeahead">邀请码 </label>
+							  <div class="controls">
+								<input type="text" name="propertyid" value="<{$user['propertyid']}>" class="span6 typeahead">
+							  </div>
+						  	</div>
+						  	<div class="control-group">
+							  <label class="control-label" for="typeahead">账号 </label>
+							  <div class="controls">
+								<input type="text" name="tel" value="<{$user['tel']}>" class="span6 typeahead">
+							  </div>
+							</div>
+							<div class="control-group">
+							  <label class="control-label" for="typeahead">密码 </label>
+							  <div class="controls">
+								<input type="text" name="password" value="<{$user['password']}>" class="span6 typeahead">
+							  </div>
+							</div>
+							<div class="form-actions">
+							  <button type="submit" class="btn btn-primary">修改</button>
+							</div>
+						  </fieldset>
+						</form>
+
+					</div>
+				</div><!--/span-->
+
+			</div><!--/row-->
+
+	</div>
+	</block>
