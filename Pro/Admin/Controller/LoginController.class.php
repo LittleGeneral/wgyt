@@ -1,6 +1,9 @@
 <?php
 namespace Admin\Controller;
 use Think\Controller;
+/**
+ * 登陆注册控制器
+ */
 class LoginController extends Controller {
     public function index(){
         $this->display();
