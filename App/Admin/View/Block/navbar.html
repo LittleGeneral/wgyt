@@ -8,7 +8,7 @@
 					<span class="icon-bar"></span>
 					<span class="icon-bar"></span>
 				</a>
-				<a class="brand" href="{:U('Index/index')}">
+				<a class="brand" href="<{:U('Index/index')}>">
 					<span>物管云台后台管理</span>
 				</a>
 
@@ -274,21 +274,21 @@
 						<li class="dropdown">
 							<a class="btn dropdown-toggle" data-toggle="dropdown" href="#">
 								<i class="halflings-icon white user"></i>
-								管理员
+								您好，<{:session('username')}>
 								<span class="caret"></span>
 							</a>
 							<ul class="dropdown-menu">
 								<li class="dropdown-menu-title">
 									<span>账号设置</span>
 								</li>
-								<li>
+								<!-- <li>
 									<a href="#">
 										<i class="halflings-icon user"></i>
 										个人信息
 									</a>
-								</li>
+								</li> -->
 								<li>
-									<a href="<{:U('Login/login')}>">
+									<a href="<{:U('Login/logout')}>">
 										<i class="halflings-icon off"></i>
 										退出
 									</a>

@@ -168,6 +168,7 @@ class Auth{
         if (isset($_authList[$uid.$t])) {
             return $_authList[$uid.$t];
         }
+
         if( $this->_config['AUTH_TYPE']==2 && isset($_SESSION['_AUTH_LIST_'.$uid.$t])){
             return $_SESSION['_AUTH_LIST_'.$uid.$t];
         }
@@ -185,10 +186,11 @@ class Auth{
         }
 
         $map=array(
-            'id'=>array('in',$ids),
+            'rule_id'=>array('in',$ids),
             'type'=>$type,
             'status'=>1,
         );
+
         //读取用户组所有权限规则
         $rules = M()->table($this->_config['AUTH_RULE'])->where($map)->field('condition,name')->select();
 
@@ -196,14 +198,14 @@ class Auth{
         $authList = array();   //
         foreach ($rules as $rule) {
             if (!empty($rule['condition'])) { //根据condition进行验证
-                $user = $this->getUserInfo($uid);//获取用户信息,一维数组
-
-                $command = preg_replace('/\{(\w*?)\}/', '$user[\'\\1\']', $rule['condition']);
-                //dump($command);//debug
-                @(eval('$condition=(' . $command . ');'));
-                if ($condition) {
-                    $authList[] = strtolower($rule['name']);
-                }
+                //TODO 此处有BUG config中AUTH_USER=member 没有对应数据库表结构
+//                $user = $this->getUserInfo($uid);//获取用户信息,一维数组
+//                $command = preg_replace('/\{(\w*?)\}/', '$user[\'\\1\']', $rule['condition']);
+//                //dump($command);//debug
+//                @(eval('$condition=(' . $command . ');'));
+//                if ($condition) {
+//                    $authList[] = strtolower($rule['name']);
+//                }
             } else {
                 //只要存在就记录
                 $authList[] = strtolower($rule['name']);

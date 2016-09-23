@@ -66,6 +66,7 @@ return array(
         ),
         'view_filter'   =>  array(
             'Behavior\WriteHtmlCacheBehavior', // 写入静态缓存
+            'Behavior\TokenBuildBehavior', // 表单令牌
         ),
     ),
 );

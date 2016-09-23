@@ -1,0 +1,66 @@
+<!-- 继承Block -->
+<extend name="Block/base"/>
+<block name="content">
+	<div id="content" class="span10">
+
+		<ul class="breadcrumb">
+			<li> <i class="icon-home"></i>
+				<a href="index.html">控制台</a> <i class="icon-angle-right"></i>
+			</li>
+			<li>
+				<i class="icon-edit"></i>
+				<a href="#">添加商品</a>
+			</li>
+		</ul>
+
+		<div class="row-fluid sortable">
+				<div class="box span12">
+					<div class="box-header" data-original-title>
+						<h2><i class="halflings-icon edit"></i><span class="break"></span>添加商品</h2>
+						<div class="box-icon">
+							<a href="#" class="btn-setting"><i class="halflings-icon wrench"></i></a>
+							<a href="#" class="btn-minimize"><i class="halflings-icon chevron-up"></i></a>
+							<a href="#" class="btn-close"><i class="halflings-icon remove"></i></a>
+						</div>
+					</div>
+					<div class="box-content">
+						<form class="form-horizontal" action="<{:U('Goods/insert')}>" method="post" enctype="multipart/form-data">
+						  <fieldset>
+							<div class="control-group">
+							  <label class="control-label" for="typeahead">商品名称</label>
+							  <div class="controls">
+								<input type="text" name="name" class="span6 typeahead">
+							  </div>
+							</div>
+							<div class="control-group">
+							  <label class="control-label" for="typeahead">商品原价</label>
+							  <div class="controls">
+								<input type="text" name="price" class="span6 typeahead">
+							  </div>
+							</div>
+							<!-- <div class="control-group hidden-phone">
+							  <label class="control-label" for="textarea2">商品图片</label>
+							  <div class="controls">
+								<textarea class="cleditor" id="textarea2" rows="3" name="content"></textarea>
+							  </div>
+							</div> -->
+							<div class="control-group">
+								<label class="control-label" for="fileInput">商品图片</label>
+								<div class="controls">
+									<input class="input-file uniform_on" id="fileInput" type="file" name="img" ></div>
+								</div>
+							<div class="form-actions">
+							  <button type="submit" class="btn btn-primary">添加商品</button>
+							  <button type="reset" class="btn">取消</button>
+							</div>
+						  </fieldset>
+						</form>
+
+					</div>
+				</div><!--/span-->
+
+			</div>
+		<!--/row-->
+
+	</div>
+</block>

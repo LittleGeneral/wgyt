@@ -24,14 +24,14 @@
 						</a>
 					</div>
 					<h2>登录你的账号</h2>
-					<form class="form-horizontal" action="<{:U('Login/login')}>" method="post">
+					<form class="form-horizontal" action="<{:U('Login/doLogin')}>" method="post">
 						<fieldset>
 
 							<div class="input-prepend" title="Username">
 								<span class="add-on">
 									<i class="halflings-icon user"></i>
 								</span>
-								<input class="input-large span10" name="username" id="username" type="text" placeholder="输入账号"/>
+								<input class="input-large span10" name="username" id="username" type="text" placeholder="账号"/>
 							</div>
 							<div class="clearfix"></div>
 
@@ -39,7 +39,7 @@
 								<span class="add-on">
 									<i class="halflings-icon lock"></i>
 								</span>
-								<input class="input-large span10" name="password" id="password" type="password" placeholder="输入密码"/>
+								<input class="input-large span10" name="password" id="password" type="password" placeholder="密码"/>
 							</div>
 							<div class="clearfix"></div>
 							<label class="remember" for="remember">
@@ -48,8 +48,8 @@
 							</label>
 
 							<div class="button-login">
-								<!-- <button type="submit" class="btn btn-primary">登录</button> -->
-								<a href="<{:U('Index/index')}>"  class="btn btn-primary">登录</a>
+								<button type="submit" class="btn btn-primary">登录</button>
+								<!-- <a href="<{:U('Index/index')}>"  class="btn btn-primary">登录</a> -->
 							</div>
 							<div class="clearfix"></div>
 						</fieldset>
