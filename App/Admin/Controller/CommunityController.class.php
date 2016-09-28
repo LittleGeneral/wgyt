@@ -2,24 +2,20 @@
 namespace Admin\Controller;
 use Think\Controller;
    /*
-	*	单个小区控制器
+	*	单个小区控制器（客服）
 	*/
-class CommunityController extends Controller{
+class CommunityController extends CommonController{
 
     //小区管理员列表
     public function index($id){
-
         $estate=M('property');
+        mysql_set_charset('latin1');
         $propertyid=$estate->where("id = '$id'")->getField('propertyid');
-
         $community = M('users');
         $communitys=$community->where("propertyid = '$propertyid'")->select();
-        // dump($communitys);die();
         $this->assign('communitys',$communitys);
-
         $this->display();
-
-		}
+	}
 
 	/**
 	 * 添加管理员
@@ -33,7 +29,6 @@ class CommunityController extends Controller{
     /**
      * 插入管理员信息
      * @DateTime 2016-08-19T10:16:58+0800
-     * @return   [type]                   [description]
      */
     public function insert()
     {
@@ -56,8 +51,6 @@ class CommunityController extends Controller{
    	/**
    	 * 修改
    	 * @DateTime 2016-08-19T10:30:39+0800
-   	 * @param    [type]                   $id [description]
-   	 * @return   [type]                       [description]
    	 */
     public function modify($id)
     {
@@ -72,7 +65,6 @@ class CommunityController extends Controller{
     /**
      * 更新
      * @DateTime 2016-08-19T15:46:11+0800
-     * @return   [type]                   [description]
      */
     public function update($id)
     {

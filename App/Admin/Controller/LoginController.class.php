@@ -21,7 +21,6 @@ class LoginController extends Controller {
      */
     public function doLogin()
     {
-
         // $username =  $_POST['username'];
         $username = I('post.username');
         $pwd = I('post.password');
@@ -45,7 +44,6 @@ class LoginController extends Controller {
      * @DateTime 2016-09-23T10:29:01+0800
      */
     public function logout() {
-
          // 清空所有session
         session(null);
         redirect(U('Login/login'), 2, '正在退出登录...');

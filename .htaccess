@@ -1,0 +1,10 @@
+<IfModule mod_rewrite.c>
+  Options +FollowSymlinks
+  RewriteEngine On
+
+  RewriteCond %{REQUEST_FILENAME} !-d
+  RewriteCond %{REQUEST_FILENAME} !-f
+  RewriteRule ^web(.*)$ index.php/$1 [QSA,PT,L]
+  RewriteRule ^web(.*)$ pro.php/$1 [QSA,PT,L]
+  RewriteRule ^Interface(.*)$ interface.php/$1 [QSA,PT,L]
+</IfModule>

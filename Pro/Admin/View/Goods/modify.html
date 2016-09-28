@@ -9,14 +9,14 @@
 			</li>
 			<li>
 				<i class="icon-edit"></i>
-				<a href="#">添加商品</a>
+				<a href="#">修改商品</a>
 			</li>
 		</ul>
 
 		<div class="row-fluid sortable">
 				<div class="box span12">
 					<div class="box-header" data-original-title>
-						<h2><i class="halflings-icon edit"></i><span class="break"></span>添加商品</h2>
+						<h2><i class="halflings-icon edit"></i><span class="break"></span>修改商品</h2>
 						<div class="box-icon">
 							<a href="#" class="btn-setting"><i class="halflings-icon wrench"></i></a>
 							<a href="#" class="btn-minimize"><i class="halflings-icon chevron-up"></i></a>
@@ -24,30 +24,31 @@
 						</div>
 					</div>
 					<div class="box-content">
-						<form class="form-horizontal" action="<{:U('Goods/insert')}>" method="post" enctype="multipart/form-data">
+						<form class="form-horizontal" action="<{:U('Goods/update')}>" method="post" enctype="multipart/form-data">
+						<input type="hidden" value="<{$goods['id']}>" name="id" />
 						  <fieldset>
 							<div class="control-group">
 							  <label class="control-label" for="typeahead">商品名称</label>
 							  <div class="controls">
-								<input type="text" name="name" class="span6 typeahead">
+								<input type="text" name="name" value="<{$goods['name']}>" class="span6 typeahead">
 							  </div>
 							</div>
 							<div class="control-group">
 							  <label class="control-label" for="typeahead">商品原价</label>
 							  <div class="controls">
-								<input type="text" name="price" class="span6 typeahead">
+								<input type="text" name="price" value="<{$goods['price']}>" class="span6 typeahead">
 							  </div>
 							</div>
 							<div class="control-group">
 							  <label class="control-label" for="typeahead">团购价格</label>
 							  <div class="controls">
-								<input type="text" name="group_price" class="span6 typeahead">
+								<input type="text" name="group_price" value="<{$goods['group_price']}>" class="span6 typeahead">
 							  </div>
 							</div>
 							<div class="control-group">
 							  <label class="control-label" for="typeahead">团购数量</label>
 							  <div class="controls">
-								<input type="text" name="count" class="span6 typeahead">
+								<input type="text" name="count" value="<{$goods['count']}>" class="span6 typeahead">
 							  </div>
 							</div>
 							<!-- <div class="control-group hidden-phone">
@@ -57,12 +58,13 @@
 							  </div>
 							</div> -->
 							<div class="control-group">
-								<label class="control-label" for="fileInput">商品图片</label>
+								<label class="control-label" for="fileInput">商品原图</label>
 								<div class="controls">
+									<img src="__PUBLIC__/Admin/Uploads/<{$goods.img}>" height="80" width="80">
 									<input class="input-file uniform_on" id="fileInput" type="file" name="img" ></div>
 								</div>
 							<div class="form-actions">
-							  <button type="submit" class="btn btn-primary">添加商品</button>
+							  <button type="submit" class="btn btn-primary">修改商品</button>
 							  <button type="reset" class="btn">取消</button>
 							</div>
 						  </fieldset>

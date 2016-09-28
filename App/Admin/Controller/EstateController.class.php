@@ -4,7 +4,7 @@ use Think\Controller;
    /*
     *   物业控制器
     */
-class EstateController extends Controller{
+class EstateController extends CommonController{
 	//物业列表
     public function index(){
 

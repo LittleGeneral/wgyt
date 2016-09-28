@@ -4,7 +4,7 @@ use Think\Controller;
 /**
  * 团购商品控制器类
  */
-class GoodsController extends Controller {
+class GoodsController extends CommonController {
 	/**
 	 * 团购商品首页
 	 * @DateTime 2016-09-20T17:07:13+0800
