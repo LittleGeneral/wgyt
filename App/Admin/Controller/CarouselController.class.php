@@ -1,37 +1,31 @@
 <?php
  /*
-    *   用户控制器
+    *   轮播图控制器
     */
 namespace Admin\Controller;
 use Think\Controller;
-class UserController extends CommonController {
-    //用户列表
+class CarouselController extends CommonController {
+
+    // 轮播图列表
     public function index(){
-        $user = M('users');
-        // $users = $user->order('createtime desc')->select();
-
-        $users = $user->alias('u')
-        		->join('LEFT JOIN property p ON p.propertyid = u.propertyid')
-        		->field('u.id,u.tel,u.cname,u.gender,u.img,u.usertype,u.password,u.address,p.name')
-        		->order('createtime desc')
-        		->select();
-
-        $this->assign('users',$users);
+        $carousel = M('carousel');
+        $carousels = $carousel->select();
+        $this->assign('carousels',$carousels);
         $this->display();
-	}
+    }
 
-	/**
-	 * 添加用户
-	 */
-	public function add()
+    /**
+     * 添加轮播图
+     */
+    public function add()
     {
         $this->display("add");
     }
 
-   	/**
-   	 * 插入用户数据
-   	 */
-   	public function insert()
+    /**
+     * 插入轮播图数据
+     */
+    public function insert()
     {
         if(!empty($_FILES['img']['name'])){
             // 设置图片上传配置信息
@@ -61,61 +55,95 @@ class UserController extends CommonController {
                 }
             }
         }
-        //实例化users表
-        $user=M('users');
-        if($user->create()) {
-            // $result = $user->data($data)->add();
-            $result = $user->add();
+        //实例化carousel表
+        $carousel=M('carousel');
+        if($carousel->create()) {
+            // $result = $carousel->data($data)->add();
+            $result = $carousel->add();
             if ($result) {
-                $this->redirect('User/index');
+                $this->redirect('Carousel/index');
             } else {
-                $this->redirect('User/add');
+                $this->redirect('Carousel/add');
             }
         }
-   	 }
+     }
 
+     // 启用轮播图
+     public function enable()
+     {
+        $id = I('get.id');
+        $carousel = M('carousel');
+        $data['is_enable']=1;
+            $obj = $carousel->create($data);
+            if(!$obj){
+                $this->error($carousel->getError());
+            }else{
+                $result = $carousel->where("id = '$id'")->data($data)->save();
+                if ($result) {
+                    $this->redirect('Carousel/index');
+                }else{
+                    $this->error('启用失败!');
+                }
+            }
+     }
 
+     // 停用轮播图
+     public function disable()
+     {
+        $id = I('get.id');
+        $carousel = M('carousel');
+        $data['is_enable']=0;
+            $obj = $carousel->create($data);
+            if(!$obj){
+                $this->error($carousel->getError());
+            }else{
+                $result = $carousel->where("id = '$id'")->data($data)->save();
+                if ($result) {
+                    $this->redirect('Carousel/index');
+                }else{
+                    $this->error('启用失败!');
+                }
+            }
+     }
     /**
      * 删除操作
-     * @DateTime 2016-09-18T14:50:31+0800
-     * @return   [type]                   [description]
      */
     public function del(){
         $id=I('get.id');
-        $user=M('users');
+        $carousel=M('carousel');
         //查询要删除的信息
-        $data=$user->find($id);
+        $data=$carousel->find($id);
         if(!empty($data['img'])){
             $img=$data['img'];
             // $thumb=$data['thumb'];
         }
         //删除该条数据
-        $result=$user->delete($id);
+        $result=$carousel->delete($id);
         if($result){
             $unsimg="./Public/Admin/Uploads/".$img;
             // $unsthumb="./Public/Admin/Uploads/".$thumb;
             unlink($unsimg);
             // unlink($unsthumb);
-            $this->redirect('User/index');
+            $this->redirect('Carousel/index');
         }else{
-            $this->redirect('User/index');
+            $this->redirect('Carousel/index');
         }
     }
 
-   	 /**
+     /**
      * ajax异步删除
      */
      public function doDel(){
         $id=I('get.id');
-        $user=M('users');
+        $carousel=M('carousel');
         //查询要删除的信息
-        $data=$user->find($id);
+        $data=$carousel->find($id);
         if(!empty($data['img'])){
             $img=$data['img'];
             // $thumb=$data['thumb'];
         }
         //删除该条数据
-        $result=$user->delete($id);
+        $result=$carousel->delete($id);
         if($result){
             $unsimg="./Public/Admin/Uploads/".$img;
             // $unsthumb="./Public/Admin/Uploads/".$thumb;
@@ -127,26 +155,23 @@ class UserController extends CommonController {
         }
     }
 
-     //修改用户信息
+     //修改轮播图信息
     public function modify($id)
     {
-         $user=M('users');
-         $users=$user->where("id = '$id'")->find();
-         $this->assign('users',$users);
+         $carousel=M('carousel');
+         $carousels=$carousel->where("id = '$id'")->find();
+         $this->assign('carousels',$carousels);
          $this->display();
 
     }
 
-   //更新用户信息
+   //更新轮播图信息
     public function update($id)
     {
         if (IS_POST) {
-             $data['cname'] = I('post.cname');
-             $data['usertype'] = I('post.usertype');
-             $data['password'] = I('post.password');
-             $data['gender'] = I('post.gender');
-             $data['tel'] = I('post.tel');
-             $data['address'] = I('post.address');
+             $data['title'] = I('post.title');
+             $data['url'] = I('post.url');
+             $data['is_enable'] = I('post.is_enable');
             if(!empty($_FILES['img']['name'])){
                 // 设置图片上传配置信息
                 $config = array(
@@ -178,15 +203,15 @@ class UserController extends CommonController {
                     }
                 }
             }
-            //实例化users表
-            $users=M('users');
-            $obj = $users->create();
+            //实例化carousel表
+            $carousel=M('carousel');
+            $obj = $carousel->create();
             if(!$obj){
-                $this->error($users->getError());
+                $this->error($carousel->getError());
             }else{
-                $result = $users->where("id = '$id'")->data($data)->save();
+                $result = $carousel->where("id = '$id'")->data($data)->save();
                 if ($result) {
-                    $this->success('修改成功!',U('User/index'));
+                    $this->success('修改成功!',U('Carousel/index'));
                 }else{
                     $this->error('修改失败!');
                 }
@@ -196,5 +221,12 @@ class UserController extends CommonController {
         }
 
     }
+
+
+
+
+
+
+
 
 }

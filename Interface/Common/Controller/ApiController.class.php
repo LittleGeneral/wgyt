@@ -80,14 +80,19 @@ class ApiController extends Controller
      * 公共错误返回
      * @param $msg 需要打印的错误信息
      * @param $code 默认打印300信息
+     * $pageNum = I('get.pageNum',1);
+        $pageCount = I('get.pageCount',5);
      */
     public function myApiPrint($msg='',$code=300,$data=''){
         $result = array(
+            // 'pageNum'=>1,
+            // 'pageCount'=>5,
             'code' => $code,
             'msg' => $msg,
             'result' => $data
         );
-        $this->ajaxReturn($result);exit;
+        echo json_encode($result,JSON_UNESCAPED_UNICODE);exit;
+        // $this->ajaxReturn($result);exit;
     }
 
     /*

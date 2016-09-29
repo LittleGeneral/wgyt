@@ -15,7 +15,12 @@ class GoodsController extends ApiController{
     public function lists()
     {
         $pageNum = I('get.pageNum',1);
-        $list = M('goods')->order('updatetime desc')->page($pageNum,10)->select();
+        $pageCount = I('get.pageCount',5);
+        $list = M('goods')
+                // ->field('id,name,price,group_price,count,img')
+                ->order('updatetime desc')
+                ->page($pageNum,$pageCount)
+                ->select();
         if ($list){
             $this->myApiPrint('success',200,$list);
         }else if($list == null){

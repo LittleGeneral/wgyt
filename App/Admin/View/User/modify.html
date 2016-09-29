@@ -1,0 +1,97 @@
+<!-- 继承Block -->
+<extend name="Block/base"/>
+<block name="content">
+	<div id="content" class="span10">
+
+		<ul class="breadcrumb">
+			<li> <i class="icon-home"></i>
+				<a href="index.html">控制台</a> <i class="icon-angle-right"></i>
+			</li>
+			<li>
+				<i class="icon-edit"></i>
+				<a href="#">修改用户</a>
+			</li>
+		</ul>
+
+		<div class="row-fluid sortable">
+				<div class="box span12">
+					<div class="box-header" data-original-title>
+						<h2><i class="halflings-icon edit"></i><span class="break"></span>修改用户</h2>
+						<div class="box-icon">
+							<a href="#" class="btn-setting"><i class="halflings-icon wrench"></i></a>
+							<a href="#" class="btn-minimize"><i class="halflings-icon chevron-up"></i></a>
+							<a href="#" class="btn-close"><i class="halflings-icon remove"></i></a>
+						</div>
+					</div>
+					<div class="box-content">
+						<form class="form-horizontal" action="<{:U('User/update')}>" method="post" enctype="multipart/form-data">
+						  <!-- <input type="hidden" name="createtime" class="span6 typeahead"> -->
+						  <input type="hidden" value="<{$users['id']}>" name="id" />
+						  <fieldset>
+						  	<div class="control-group">
+							  <label class="control-label" for="typeahead">选择用户类别</label>
+							  <div class="controls">
+								<input type="radio" name="usertype" value="0" class="span6 typeahead" checked>普通业主
+								<input type="radio" name="usertype" value="3" class="span6 typeahead" >工程师
+								<input type="radio" name="usertype" value="4" class="span6 typeahead" >保安
+								<input type="radio" name="usertype" value="9" class="span6 typeahead" >物业客服
+							  </div>
+							</div>
+							<div class="control-group">
+							  <label class="control-label" for="typeahead">用户名称</label>
+							  <div class="controls">
+								<input type="text" name="cname" value="<{$users['cname']}>" class="span6 typeahead">
+							  </div>
+							</div>
+							<div class="control-group">
+							  <label class="control-label" for="typeahead">密码</label>
+							  <div class="controls">
+								<input type="password" name="password" value="<{$users['password']}>" class="span6 typeahead">
+							  </div>
+							</div>
+							<div class="control-group">
+							  <label class="control-label" for="typeahead">用户性别</label>
+							  <div class="controls">
+								<input type="radio" name="gender" value="1" class="span6 typeahead" checked>男
+								<input type="radio" name="gender" value="2" class="span6 typeahead" >女
+							  </div>
+							</div>
+							<div class="control-group">
+							  <label class="control-label" for="typeahead">用户电话</label>
+							  <div class="controls">
+								<input type="text" name="tel" value="<{$users['tel']}>" class="span6 typeahead">
+							  </div>
+							</div>
+							<div class="control-group">
+							  <label class="control-label" for="typeahead">用户地址</label>
+							  <div class="controls">
+								<input type="text" name="address" value="<{$users['address']}>" class="span6 typeahead">
+							  </div>
+							</div>
+							<!-- <div class="control-group hidden-phone">
+							  <label class="control-label" for="textarea2">用户图片</label>
+							  <div class="controls">
+								<textarea class="cleditor" id="textarea2" rows="3" name="content"></textarea>
+							  </div>
+							</div> -->
+							<div class="control-group">
+								<label class="control-label" for="fileInput">用户头像</label>
+								<div class="controls">
+									<img src="__PUBLIC__/Admin/Uploads/<{$users.img}>" height="80" width="80">
+									<input class="input-file uniform_on" id="fileInput" type="file" name="img" ></div>
+								</div>
+							<div class="form-actions">
+							  <button type="submit" class="btn btn-primary">修改用户</button>
+							  <button type="reset" class="btn">取消</button>
+							</div>
+						  </fieldset>
+						</form>
+
+					</div>
+				</div><!--/span-->
+
+			</div>
+		<!--/row-->
+
+	</div>
+</block>
