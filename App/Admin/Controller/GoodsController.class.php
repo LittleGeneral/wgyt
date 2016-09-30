@@ -8,7 +8,6 @@ class GoodsController extends CommonController {
 	/**
 	 * 团购商品首页
 	 * @DateTime 2016-09-20T17:07:13+0800
-	 * @return   [type]                   [description]
 	 */
 	public function index(){
         $model = M('goods');
@@ -24,7 +23,16 @@ class GoodsController extends CommonController {
 	 */
 	public function add()
     {
-        $this->display("add");
+        $m = M('category');
+        $categories = M('category')->order('concat(path,id)')->select();
+        $this -> assign('categories',$categories);
+        //计算path中逗号的数量
+        foreach($categories as $v){
+            $m = substr_count($v['path'],',');
+            $mark[$v['id']] = str_repeat('&nbsp;',$m*3).str_repeat('---',$m).' ';
+        }
+        $this->assign('mark',$mark);
+        $this -> display();
     }
 
    	/**
@@ -33,6 +41,8 @@ class GoodsController extends CommonController {
    	 */
    	public function insert()
     {
+        // $a = I('post.category_id');
+        // dump($a);die();
         if(!empty($_FILES['img']['name'])){
             // 设置图片上传配置信息
             $config = array(
@@ -64,7 +74,8 @@ class GoodsController extends CommonController {
                 }
             }
         }
-
+        $_POST['createtime']=time();
+        $_POST['lasttime']=120;
         //实例化goods表
         $model=M('goods');
         if($model->create()) {

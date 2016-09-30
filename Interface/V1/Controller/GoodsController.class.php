@@ -17,8 +17,8 @@ class GoodsController extends ApiController{
         $pageNum = I('get.pageNum',1);
         $pageCount = I('get.pageCount',5);
         $list = M('goods')
-                // ->field('id,name,price,group_price,count,img')
-                ->order('updatetime desc')
+                ->field('id,name,price,group_price,count,img,title,lasttime')
+                // ->order('updatetime desc')
                 ->page($pageNum,$pageCount)
                 ->select();
         if ($list){
