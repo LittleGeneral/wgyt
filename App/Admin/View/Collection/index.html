@@ -1,0 +1,111 @@
+<!--继承block-->
+<extend name="Block/base"/>
+<block name="content">
+	<div id="content" class="span10">
+		<ul class="breadcrumb">
+			<li> <i class="icon-home"></i>
+				<a href="index.html">控制台</a> <i class="icon-angle-right"></i>
+			</li>
+			<li>
+				<a href="#">收藏</a>
+			</li>
+		</ul>
+
+		<div class="row-fluid sortable">
+			<div class="box span12">
+				<div class="box-header" data-original-title>
+					<h2>
+						<i class="halflings-icon user"></i>
+						<span class="break"></span>
+						收藏列表
+					</h2>
+					<div class="box-icon">
+						<a href="#" class="btn-setting">
+							<i class="halflings-icon wrench"></i>
+						</a>
+						<a href="#" class="btn-minimize">
+							<i class="halflings-icon chevron-up"></i>
+						</a>
+						<a href="#" class="btn-close">
+							<i class="halflings-icon remove"></i>
+						</a>
+					</div>
+				</div>
+				<div class="box-content">
+					<table class="table table-striped table-bordered bootstrap-datatable datatable">
+						<thead>
+							<tr>
+								<th>ID号</th>
+								<th>商品名称</th>
+								<th>商品标题</th>
+								<th>商品图片</th>
+								<th>收藏人</th>
+								<th>收藏时间</th>
+								<th>价格</th>
+								<th>团购价</th>
+								<th>团购总数量</th>
+								<th>剩余时间</th>
+								<th>商品状态</th>
+								<th>操作</th>
+							</tr>
+						</thead>
+						<tbody>
+							<foreach name="collections" item="vo">
+								<tr>
+									<td><{$vo['id']}></td>
+									<td class="center"><{$vo.name}></td>
+									<td class="center"><{$vo.title}></td>
+									<td class="center">
+										<img src="__PUBLIC__/Admin/Uploads/<{$vo.img}>" height="80" width="80">
+									</td>
+									<td class="center"><{$vo.cname}></td>
+									<td class="center"><{$vo.createtime}></td>
+									<td class="center"><{$vo.price}></td>
+									<td class="center"><{$vo.group_price}></td>
+									<td class="center"><{$vo.count}></td>
+									<td class="center"><{$vo.lasttime}></td>
+									<td class="center"><{$vo['status']==0?'下架':'上架'}></td>
+								<td class="center">
+									<if condition="$vo[status] eq 0">
+										<a class="btn btn-info" href="__URL__/shelve/id/<{$vo.id}>">上架</a>
+									<else />
+										<a class="btn btn-danger" href="__URL__/offShelve/id/<{$vo.id}>" >下架</a>
+									</if>
+									<a class="btn btn-info" href="__URL__/modify/id/<{$vo.id}>">修改</a>
+									<a class="btn btn-danger" href="__URL__/del/id/<{$vo.id}>">删除</a>
+										<!-- <a class="btn btn-danger" href="javascript:(0);" onclick="doDel(this, '<{$vo.id}>')">删除</a> -->
+									</td>
+								</tr>
+							</foreach>
+						</tbody>
+					</table>
+				</div>
+			</div>
+			<!--/span-->
+		</div>
+		<!--/row-->
+</div>
+<script type="text/javascript">
+
+        function doDel(obj, id) {
+            if (window.confirm('确定删除id为'+id+'产品？')) {
+                //运用ajax实现无刷新删除
+                $.ajax({
+                    url: '<{:U("Goods/doDel")}>',
+                    type: 'get',
+                    data: {'id': id},
+                    success: function(data) {
+                        if (data) {
+                            $(obj).parents("tr").remove();
+                        }else{
+                            alert('删除失败');
+                        }
+                    },
+                    // error: function($a, $b, $c) {
+                    //     alert($c);
+                    // }
+                });
+            }
+        }
+    </script>
+</block>
