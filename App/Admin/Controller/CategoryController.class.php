@@ -1,37 +1,63 @@
 <?php
+ /*
+    *   商品分类控制器
+    */
 namespace Admin\Controller;
 use Think\Controller;
-/**
- * 团购商品控制器类
- */
-class GoodsController extends CommonController {
-	/**
-	 * 团购商品首页
-	 * @DateTime 2016-09-20T17:07:13+0800
-	 * @return   [type]                   [description]
-	 */
-	public function index(){
-        $model = M('goods');
-        $goods = $model->select();
-        // dump($goods);die();
-        $this->assign('goods',$goods);
-        $this->display();
-	}
+class CategoryController extends CommonController {
 
-	/**
-	 * 添加商品
-	 * @DateTime 2016-09-21T10:30:29+0800
-	 */
-	public function add()
-    {
-        $this->display("add");
+    // 商品分类列表
+    public function index(){
+        $category = M('category');
+        $where['name']  = array('like',"%{$_REQUEST['keyword']}%");
+        $where['status'] = 0;
+        $count = $category ->where($where)->count();
+        $Page = new \Think\Page($count,8);
+        $categories = $category ->where($where)->order('concat(path,id)')->limit($Page->firstRow.','.$Page->listRows)->select();
+        $show = $Page -> show();
+        $this -> assign('categories',$categories);
+        //计算path中逗号的数量
+        foreach($categories as $v){
+            $category = substr_count($v['path'],',');
+            $mark[$v['id']] = str_repeat('&nbsp;',$category * 3).str_repeat('---',$category).' ';
+        }
+        $this->assign('mark',$mark);
+        $this->assign('page',$show);
+        $this->display();
     }
 
-   	/**
-   	 * 插入商品数据
-   	 * @DateTime 2016-09-21T10:37:30+0800
-   	 */
-   	public function insert()
+    /**
+     * 添加商品分类
+     */
+    public function add()
+    {   $pid = isset($_GET['id']) ? $_GET["id"] : '0';
+        $path = isset($_GET['path']) ? $_GET["path"] : '0,';
+        $name = isset($_GET['name']) ? $_GET["name"] : '根目录';
+        $this -> assign('id',$pid);
+        $this -> assign('path',$path);
+        $this -> assign('name',$name);
+        $this->display();
+    }
+
+
+    //添加分类商品
+    public function create(){
+        $m = M('category');
+        $m -> pid = $_POST['pid'];
+        $m -> name = $_POST['name'];
+        $m -> path = $_POST['path'];
+        $count = $m -> add();
+        if($count>0){
+            $this -> success('添加成功!',index,2);
+        }else{
+            $this -> error('添加失败!',index,3);
+        }
+    }
+
+    /**
+     * 插入商品分类数据
+     */
+    public function insert()
     {
         if(!empty($_FILES['img']['name'])){
             // 设置图片上传配置信息
@@ -42,10 +68,8 @@ class GoodsController extends CommonController {
                 );
             //1.实例化上传类
             $upload = new \Think\Upload($config);
-
             //2.上传操作
             $img = $upload->upload();  // 多文件上传
-
             //3.判断
             if (!$img) {
                 $this->error($upload->getError());
@@ -56,7 +80,6 @@ class GoodsController extends CommonController {
                     $filename=$img['img']['savepath'].$img['img']['savename'];
                     //打开图片
                     $image->open('./Public/Admin/Uploads/'.$filename);
-
                     //生成缩略图片
                     $image->thumb(100,100)->save('./Public/Admin/Uploads/'.$img['img']['savepath'].'t_'.$img['img']['savename']);
                     $_POST['img']=$filename;  //保存为原图
@@ -64,62 +87,96 @@ class GoodsController extends CommonController {
                 }
             }
         }
-
-        //实例化goods表
-        $model=M('goods');
-        if($model->create()) {
-            $res = $model->add();
-            if ($res) {
-                $this->redirect('Goods/index');
+        //实例化category表
+        $category=M('category');
+        if($category->create()) {
+            // $result = $category->data($data)->add();
+            $result = $category->add();
+            if ($result) {
+                $this->redirect('Carousel/index');
             } else {
-                $this->redirect('Goods/add');
+                $this->redirect('Carousel/add');
             }
         }
+     }
 
-   	 }
+     // 启用商品分类
+     public function enable()
+     {
+        $id = I('get.id');
+        $category = M('category');
+        $data['is_enable']=1;
+            $obj = $category->create($data);
+            if(!$obj){
+                $this->error($category->getError());
+            }else{
+                $result = $category->where("id = '$id'")->data($data)->save();
+                if ($result) {
+                    $this->redirect('Carousel/index');
+                }else{
+                    $this->error('启用失败!');
+                }
+            }
+     }
 
-
+     // 停用商品分类
+     public function disable()
+     {
+        $id = I('get.id');
+        $category = M('category');
+        $data['is_enable']=0;
+            $obj = $category->create($data);
+            if(!$obj){
+                $this->error($category->getError());
+            }else{
+                $result = $category->where("id = '$id'")->data($data)->save();
+                if ($result) {
+                    $this->redirect('Carousel/index');
+                }else{
+                    $this->error('启用失败!');
+                }
+            }
+     }
     /**
      * 删除操作
-     * @DateTime 2016-09-18T14:50:31+0800
      */
     public function del(){
         $id=I('get.id');
-        $model=M('goods');
+        $category=M('category');
         //查询要删除的信息
-        $data=$model->find($id);
+        $data=$category->find($id);
         if(!empty($data['img'])){
             $img=$data['img'];
             // $thumb=$data['thumb'];
         }
         //删除该条数据
-        $res=$model->delete($id);
-        if($res){
+        $result=$category->delete($id);
+        if($result){
             $unsimg="./Public/Admin/Uploads/".$img;
             // $unsthumb="./Public/Admin/Uploads/".$thumb;
             unlink($unsimg);
             // unlink($unsthumb);
-            $this->redirect('Goods/index');
+            $this->redirect('Carousel/index');
         }else{
-            $this->redirect('Goods/index');
+            $this->redirect('Carousel/index');
         }
     }
 
-   	 /**
+     /**
      * ajax异步删除
      */
      public function doDel(){
         $id=I('get.id');
-        $model=M('goods');
+        $category=M('category');
         //查询要删除的信息
-        $data=$model->find($id);
+        $data=$category->find($id);
         if(!empty($data['img'])){
             $img=$data['img'];
             // $thumb=$data['thumb'];
         }
         //删除该条数据
-        $res=$model->delete($id);
-        if($res){
+        $result=$category->delete($id);
+        if($result){
             $unsimg="./Public/Admin/Uploads/".$img;
             // $unsthumb="./Public/Admin/Uploads/".$thumb;
             unlink($unsimg);
@@ -130,30 +187,23 @@ class GoodsController extends CommonController {
         }
     }
 
-     //修改商品信息
+     //修改商品分类信息
     public function modify($id)
     {
-         $good=M('goods');
-         // $id=I('get.id');
-         // $id=(int)$_GET['id'];
-         $goods=$good->where("id = '$id'")->find();
-         $this->assign('goods',$goods);
+         $category=M('category');
+         $categorys=$category->where("id = '$id'")->find();
+         $this->assign('categorys',$categorys);
          $this->display();
 
     }
 
-
-
-   //更新商品信息
+   //更新商品分类信息
     public function update($id)
     {
         if (IS_POST) {
-             $data['name'] = I('post.name');
-             $data['price'] = I('post.price');
-             $data['group_price'] = I('post.group_price');
-             $data['count'] = I('post.count');
-
-            // dump($id);die();
+             $data['title'] = I('post.title');
+             $data['url'] = I('post.url');
+             $data['is_enable'] = I('post.is_enable');
             if(!empty($_FILES['img']['name'])){
                 // 设置图片上传配置信息
                 $config = array(
@@ -185,15 +235,15 @@ class GoodsController extends CommonController {
                     }
                 }
             }
-            //实例化goods表
-            $goods=M('goods');
-            $obj = $goods->create();
+            //实例化category表
+            $category=M('category');
+            $obj = $category->create();
             if(!$obj){
-                $this->error($goods->getError());
+                $this->error($category->getError());
             }else{
-                $result = $goods->where("id = '$id'")->data($data)->save();
+                $result = $category->where("id = '$id'")->data($data)->save();
                 if ($result) {
-                    $this->success('修改成功!',U('Goods/index'));
+                    $this->success('修改成功!',U('Carousel/index'));
                 }else{
                     $this->error('修改失败!');
                 }
@@ -204,9 +254,11 @@ class GoodsController extends CommonController {
 
     }
 
+
+
+
+
+
+
+
 }
-
-
-
-
-

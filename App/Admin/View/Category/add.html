@@ -1,0 +1,57 @@
+<!-- 继承Block -->
+<extend name="Block/base"/>
+<block name="content">
+	<div id="content" class="span10">
+
+		<ul class="breadcrumb">
+			<li> <i class="icon-home"></i>
+				<a href="index.html">控制台</a> <i class="icon-angle-right"></i>
+			</li>
+			<li>
+				<i class="icon-edit"></i>
+				<a href="#">添加分类</a>
+			</li>
+		</ul>
+
+		<div class="row-fluid sortable">
+				<div class="box span6">
+					<div class="box-header" data-original-title>
+						<h2><i class="halflings-icon edit"></i><span class="break"></span>添加分类</h2>
+						<div class="box-icon">
+							<a href="#" class="btn-minimize"><i class="halflings-icon chevron-up"></i></a>
+							<a href="#" class="btn-close"><i class="halflings-icon remove"></i></a>
+						</div>
+					</div>
+					<div class="box-content">
+						<form class="form-horizontal" action="<{:U('Category/create')}>" method="post" enctype="multipart/form-data">
+							<input type="hidden" name="pid" value="<{$id}>"/>
+							<input type="hidden" name="path" value="<{$path}>">
+						  <fieldset>
+							<div class="control-group">
+							  <label class="control-label" for="typeahead">父类名称</label>
+							  <div class="controls">
+							  	<!-- <td class="span4 typeahead"><{$name}></td> -->
+								<input type="text" disabled="" value="<{$name}>" class="span4 typeahead">
+							  </div>
+							</div>
+							<div class="control-group">
+							  <label class="control-label" for="typeahead">分类名称</label>
+							  <div class="controls">
+								<input type="text" name="name" class="span4 typeahead">
+							  </div>
+							</div>
+							<div class="form-actions">
+							  <button type="submit" class="btn btn-primary">添加</button>
+							  <button type="reset" class="btn">取消</button>
+							</div>
+						  </fieldset>
+						</form>
+
+					</div>
+				</div><!--/span-->
+
+			</div>
+		<!--/row-->
+
+	</div>
+</block>

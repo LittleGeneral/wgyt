@@ -115,6 +115,32 @@
 			<li>
 				<a class="dropmenu" href="#">
 					<i class="icon-align-justify icon-folder-close-alt"></i>
+					<span class="hidden-tablet">商品分类管理</span>
+				</a>
+				<ul>
+					<li>
+						<a class="submenu" href="<{:U('Category/index')}>">
+							<i class="icon-file-alt"></i>
+							<span class="hidden-tablet">商品分类列表</span>
+						</a>
+					</li>
+					<li>
+						<a class="submenu" href="<{:U('Category/add')}>">
+							<i class="icon-file-alt"></i>
+							<span class="hidden-tablet">添加商品分类</span>
+						</a>
+					</li>
+					<!-- <li>
+						<a class="submenu" href="<{:U('Goods/add')}>">
+							<i class="icon-file-alt"></i>
+							<span class="hidden-tablet">回收站</span>
+						</a>
+					</li> -->
+				</ul>
+			</li>
+			<li>
+				<a class="dropmenu" href="#">
+					<i class="icon-align-justify icon-folder-close-alt"></i>
 					<span class="hidden-tablet">商品管理</span>
 				</a>
 				<ul>
@@ -125,7 +151,8 @@
 						</a>
 					</li>
 					<li>
-						<a class="submenu" href="<{:U('Goods/add')}>">
+						<a class="submenu" href="#">
+						<!-- <a class="submenu" href="<{:U('Goods/add')}>"> -->
 							<i class="icon-file-alt"></i>
 							<span class="hidden-tablet">添加商品</span>
 						</a>
