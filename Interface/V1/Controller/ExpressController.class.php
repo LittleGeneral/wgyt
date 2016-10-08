@@ -1,19 +1,20 @@
 <?php
 /**
- * 卖家接口API
+ * 订单接口API
  */
 namespace V1\Controller;
 
 use Common\Controller\ApiController;
 
-class SellerController extends ApiController{
+class ExpressController extends ApiController{
     public function index(){
         $this->myApiPrint('无效接口');
     }
 
 
-    //卖家物流列表接口
-    public function lists(){
+    //物流详情接口
+    public function express_details(){
+
         $pageNum = I('get.pageNum',1);
         $pageCount = I('get.pageCount',5);
         $express = M('express');
@@ -30,7 +31,6 @@ class SellerController extends ApiController{
             $this->myApiPrint('系统繁忙，请稍后再试',300);
         }
 	}
-
 
 
 

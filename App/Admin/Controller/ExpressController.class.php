@@ -1,21 +1,24 @@
 <?php
  /*
-    *   轮播图控制器
+    *   物流快递控制器
     */
 namespace Admin\Controller;
 use Think\Controller;
-class CarouselController extends CommonController {
+class ExpressController extends CommonController {
 
-    // 轮播图列表
+    // 物流列表
     public function index(){
-        $carousel = M('carousel');
-        $carousels = $carousel->select();
-        $this->assign('carousels',$carousels);
+        $express = M('express');
+        $expresses = $express->alias('e')
+                    ->join('LEFT JOIN carrier c ON e.id = c.carrier_id')
+                    // ->field('c.id,c.createtime,c.status,u.cname,g.name,g.price,g.group_price,g.group_price,g.count,g.img,g.title,g.lasttime')
+                    ->select();
+        $this->assign('expresses',$expresses);
         $this->display();
     }
 
     /**
-     * 添加轮播图
+     * 添加物流
      */
     public function add()
     {
@@ -23,7 +26,7 @@ class CarouselController extends CommonController {
     }
 
     /**
-     * 插入轮播图数据
+     * 插入物流数据
      */
     public function insert()
     {
@@ -54,10 +57,10 @@ class CarouselController extends CommonController {
                 }
             }
         }
-        //实例化carousel表
-        $carousel=M('carousel');
-        if($carousel->create()) {
-            $result = $carousel->add();
+        //实例化express表
+        $express=M('express');
+        if($express->create()) {
+            $result = $express->add();
             if ($result) {
                 $this->redirect('Carousel/index');
             } else {
@@ -66,17 +69,17 @@ class CarouselController extends CommonController {
         }
      }
 
-     // 启用轮播图
+     // 启用物流
      public function enable()
      {
         $id = I('get.id');
-        $carousel = M('carousel');
+        $express = M('express');
         $data['is_enable']=1;
-            $obj = $carousel->create($data);
+            $obj = $express->create($data);
             if(!$obj){
-                $this->error($carousel->getError());
+                $this->error($express->getError());
             }else{
-                $result = $carousel->where("id = '$id'")->data($data)->save();
+                $result = $express->where("id = '$id'")->data($data)->save();
                 if ($result) {
                     $this->redirect('Carousel/index');
                 }else{
@@ -85,17 +88,17 @@ class CarouselController extends CommonController {
             }
      }
 
-     // 停用轮播图
+     // 停用物流
      public function disable()
      {
         $id = I('get.id');
-        $carousel = M('carousel');
+        $express = M('express');
         $data['is_enable']=0;
-            $obj = $carousel->create($data);
+            $obj = $express->create($data);
             if(!$obj){
-                $this->error($carousel->getError());
+                $this->error($express->getError());
             }else{
-                $result = $carousel->where("id = '$id'")->data($data)->save();
+                $result = $express->where("id = '$id'")->data($data)->save();
                 if ($result) {
                     $this->redirect('Carousel/index');
                 }else{
@@ -108,15 +111,15 @@ class CarouselController extends CommonController {
      */
     public function del(){
         $id=I('get.id');
-        $carousel=M('carousel');
+        $express=M('express');
         //查询要删除的信息
-        $data=$carousel->find($id);
+        $data=$express->find($id);
         if(!empty($data['img'])){
             $img=$data['img'];
             // $thumb=$data['thumb'];
         }
         //删除该条数据
-        $result=$carousel->delete($id);
+        $result=$express->delete($id);
         if($result){
             $unsimg="./Public/Admin/Uploads/".$img;
             // $unsthumb="./Public/Admin/Uploads/".$thumb;
@@ -133,15 +136,15 @@ class CarouselController extends CommonController {
      */
      public function doDel(){
         $id=I('get.id');
-        $carousel=M('carousel');
+        $express=M('express');
         //查询要删除的信息
-        $data=$carousel->find($id);
+        $data=$express->find($id);
         if(!empty($data['img'])){
             $img=$data['img'];
             // $thumb=$data['thumb'];
         }
         //删除该条数据
-        $result=$carousel->delete($id);
+        $result=$express->delete($id);
         if($result){
             $unsimg="./Public/Admin/Uploads/".$img;
             // $unsthumb="./Public/Admin/Uploads/".$thumb;
@@ -153,17 +156,17 @@ class CarouselController extends CommonController {
         }
     }
 
-     //修改轮播图信息
+     //修改物流信息
     public function modify($id)
     {
-         $carousel=M('carousel');
-         $carousels=$carousel->where("id = '$id'")->find();
-         $this->assign('carousels',$carousels);
+         $express=M('express');
+         $expresses=$express->where("id = '$id'")->find();
+         $this->assign('expresses',$expresses);
          $this->display();
 
     }
 
-   //更新轮播图信息
+   //更新物流信息
     public function update($id)
     {
         if (IS_POST) {
@@ -201,13 +204,13 @@ class CarouselController extends CommonController {
                     }
                 }
             }
-            //实例化carousel表
-            $carousel=M('carousel');
-            $obj = $carousel->create();
+            //实例化express表
+            $express=M('express');
+            $obj = $express->create();
             if(!$obj){
-                $this->error($carousel->getError());
+                $this->error($express->getError());
             }else{
-                $result = $carousel->where("id = '$id'")->data($data)->save();
+                $result = $express->where("id = '$id'")->data($data)->save();
                 if ($result) {
                     $this->success('修改成功!',U('Carousel/index'));
                 }else{

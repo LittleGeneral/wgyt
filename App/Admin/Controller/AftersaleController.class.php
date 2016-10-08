@@ -1,21 +1,21 @@
 <?php
  /*
-    *   轮播图控制器
+    *   售后控制器
     */
 namespace Admin\Controller;
 use Think\Controller;
-class CarouselController extends CommonController {
+class AftersaleController extends CommonController {
 
-    // 轮播图列表
+    // 售后列表
     public function index(){
-        $carousel = M('carousel');
-        $carousels = $carousel->select();
-        $this->assign('carousels',$carousels);
+        $after_sale = M('after_sale');
+        $after_sales = $after_sale->select();
+        $this->assign('after_sales',$after_sales);
         $this->display();
     }
 
     /**
-     * 添加轮播图
+     * 添加售后
      */
     public function add()
     {
@@ -23,7 +23,7 @@ class CarouselController extends CommonController {
     }
 
     /**
-     * 插入轮播图数据
+     * 插入售后数据
      */
     public function insert()
     {
@@ -54,10 +54,10 @@ class CarouselController extends CommonController {
                 }
             }
         }
-        //实例化carousel表
-        $carousel=M('carousel');
-        if($carousel->create()) {
-            $result = $carousel->add();
+        //实例化after_sale表
+        $after_sale=M('after_sale');
+        if($after_sale->create()) {
+            $result = $after_sale->add();
             if ($result) {
                 $this->redirect('Carousel/index');
             } else {
@@ -66,17 +66,17 @@ class CarouselController extends CommonController {
         }
      }
 
-     // 启用轮播图
+     // 启用售后
      public function enable()
      {
         $id = I('get.id');
-        $carousel = M('carousel');
+        $after_sale = M('after_sale');
         $data['is_enable']=1;
-            $obj = $carousel->create($data);
+            $obj = $after_sale->create($data);
             if(!$obj){
-                $this->error($carousel->getError());
+                $this->error($after_sale->getError());
             }else{
-                $result = $carousel->where("id = '$id'")->data($data)->save();
+                $result = $after_sale->where("id = '$id'")->data($data)->save();
                 if ($result) {
                     $this->redirect('Carousel/index');
                 }else{
@@ -85,17 +85,17 @@ class CarouselController extends CommonController {
             }
      }
 
-     // 停用轮播图
+     // 停用售后
      public function disable()
      {
         $id = I('get.id');
-        $carousel = M('carousel');
+        $after_sale = M('after_sale');
         $data['is_enable']=0;
-            $obj = $carousel->create($data);
+            $obj = $after_sale->create($data);
             if(!$obj){
-                $this->error($carousel->getError());
+                $this->error($after_sale->getError());
             }else{
-                $result = $carousel->where("id = '$id'")->data($data)->save();
+                $result = $after_sale->where("id = '$id'")->data($data)->save();
                 if ($result) {
                     $this->redirect('Carousel/index');
                 }else{
@@ -108,15 +108,15 @@ class CarouselController extends CommonController {
      */
     public function del(){
         $id=I('get.id');
-        $carousel=M('carousel');
+        $after_sale=M('after_sale');
         //查询要删除的信息
-        $data=$carousel->find($id);
+        $data=$after_sale->find($id);
         if(!empty($data['img'])){
             $img=$data['img'];
             // $thumb=$data['thumb'];
         }
         //删除该条数据
-        $result=$carousel->delete($id);
+        $result=$after_sale->delete($id);
         if($result){
             $unsimg="./Public/Admin/Uploads/".$img;
             // $unsthumb="./Public/Admin/Uploads/".$thumb;
@@ -133,15 +133,15 @@ class CarouselController extends CommonController {
      */
      public function doDel(){
         $id=I('get.id');
-        $carousel=M('carousel');
+        $after_sale=M('after_sale');
         //查询要删除的信息
-        $data=$carousel->find($id);
+        $data=$after_sale->find($id);
         if(!empty($data['img'])){
             $img=$data['img'];
             // $thumb=$data['thumb'];
         }
         //删除该条数据
-        $result=$carousel->delete($id);
+        $result=$after_sale->delete($id);
         if($result){
             $unsimg="./Public/Admin/Uploads/".$img;
             // $unsthumb="./Public/Admin/Uploads/".$thumb;
@@ -153,17 +153,17 @@ class CarouselController extends CommonController {
         }
     }
 
-     //修改轮播图信息
+     //修改售后信息
     public function modify($id)
     {
-         $carousel=M('carousel');
-         $carousels=$carousel->where("id = '$id'")->find();
-         $this->assign('carousels',$carousels);
+         $after_sale=M('after_sale');
+         $after_sales=$after_sale->where("id = '$id'")->find();
+         $this->assign('after_sales',$after_sales);
          $this->display();
 
     }
 
-   //更新轮播图信息
+   //更新售后信息
     public function update($id)
     {
         if (IS_POST) {
@@ -201,13 +201,13 @@ class CarouselController extends CommonController {
                     }
                 }
             }
-            //实例化carousel表
-            $carousel=M('carousel');
-            $obj = $carousel->create();
+            //实例化after_sale表
+            $after_sale=M('after_sale');
+            $obj = $after_sale->create();
             if(!$obj){
-                $this->error($carousel->getError());
+                $this->error($after_sale->getError());
             }else{
-                $result = $carousel->where("id = '$id'")->data($data)->save();
+                $result = $after_sale->where("id = '$id'")->data($data)->save();
                 if ($result) {
                     $this->success('修改成功!',U('Carousel/index'));
                 }else{
