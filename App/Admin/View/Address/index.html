@@ -1,0 +1,105 @@
+<!--继承block-->
+<extend name="Block/base"/>
+<block name="content">
+	<div id="content" class="span10">
+		<ul class="breadcrumb">
+			<li> <i class="icon-home"></i>
+				<a href="index.html">控制台</a> <i class="icon-angle-right"></i>
+			</li>
+			<li>
+				<a href="#">地址</a>
+			</li>
+		</ul>
+
+		<div class="row-fluid sortable">
+			<div class="box span12">
+				<div class="box-header" data-original-title>
+					<h2>
+						<i class="halflings-icon user"></i>
+						<span class="break"></span>
+						地址列表
+					</h2>
+					<div class="box-icon">
+						<!-- <a href="#" class="btn-setting">
+							<i class="halflings-icon wrench"></i>
+						</a> -->
+						<a href="#" class="btn-minimize">
+							<i class="halflings-icon chevron-up"></i>
+						</a>
+						<a href="#" class="btn-close">
+							<i class="halflings-icon remove"></i>
+						</a>
+					</div>
+				</div>
+				<div class="box-content">
+					<table class="table table-striped table-bordered bootstrap-datatable datatable">
+						<a class="btn btn-success" href="<{:U('Address/add')}>">添加地址</a>
+						<br />
+						<br />
+						<thead>
+							<tr>
+								<th>ID号</th>
+								<th>收货人姓名</th>
+								<th>收货人地址</th>
+								<th>手机</th>
+								<th>邮编</th>
+								<th>默认收货地址</th>
+								<th>操作</th>
+							</tr>
+						</thead>
+						<tbody>
+							<foreach name="addresses" item="vo">
+								<tr>
+									<td><{$vo['addr_id']}></td>
+									<td class="center"><{$vo.cname}></td>
+									<!-- <td class="center"><{$vo.true_name}></td> -->
+									<td class="center"><{$vo.address}></td>
+									<!-- <td class="center"><{$vo.addr}></td> -->
+									<td class="center"><{$vo.tel}></td>
+									<!-- <td class="center"><{$vo.cellphone}></td> -->
+									<td class="center"><{$vo.code}></td>
+									<td class="center"><{$vo.is_default}></td>
+								<td class="center">
+									<!-- <a class="btn btn-success" href="<{:U('Community/index')}>">
+									-->
+									<!-- <a class="btn btn-success" href="#">
+										查看地址详情
+									</a> -->
+									<a class="btn btn-info" href="__URL__/modify/id/<{$vo.id}>">修改</a>
+									<a class="btn btn-danger" href="__URL__/del/id/<{$vo.id}>">删除</a>
+										<!-- <a class="btn btn-danger" href="javascript:(0);" onclick="doDel(this, '<{$vo.id}>')">删除</a> -->
+									</td>
+								</tr>
+							</foreach>
+						</tbody>
+					</table>
+				</div>
+			</div>
+			<!--/span-->
+		</div>
+		<!--/row-->
+</div>
+<script type="text/javascript">
+
+        function doDel(obj, id) {
+            if (window.confirm('确定删除id为'+id+'产品？')) {
+                //运用ajax实现无刷新删除
+                $.ajax({
+                    url: '<{:U("Goods/doDel")}>',
+                    type: 'get',
+                    data: {'id': id},
+                    success: function(data) {
+                        if (data) {
+                            $(obj).parents("tr").remove();
+                        }else{
+                            alert('删除失败');
+                        }
+                    },
+                    // error: function($a, $b, $c) {
+                    //     alert($c);
+                    // }
+                });
+            }
+        }
+    </script>
+</block>

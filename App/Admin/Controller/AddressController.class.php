@@ -1,21 +1,24 @@
 <?php
  /*
-    *   订单控制器
+    *   收货地址控制器
     */
 namespace Admin\Controller;
 use Think\Controller;
-class OrderController extends CommonController {
+class AddressController extends CommonController {
 
-    // 订单列表
+    // 收货地址列表
     public function index(){
-        $order = M('order');
-        $orders = $order->select();
-        $this->assign('orders',$orders);
+        $address = M('address');
+        $addresses = $address->alias('a')
+                    ->join('LEFT JOIN users u ON u.id = a.user_id')
+                    // ->field('c.id,c.comments,c.star,c.time,u.cname,g.name')
+                    ->select();
+        $this->assign('addresses',$addresses);
         $this->display();
     }
 
     /**
-     * 添加订单
+     * 添加收货地址
      */
     public function add()
     {
@@ -23,7 +26,7 @@ class OrderController extends CommonController {
     }
 
     /**
-     * 插入订单数据
+     * 插入收货地址数据
      */
     public function insert()
     {
@@ -54,10 +57,10 @@ class OrderController extends CommonController {
                 }
             }
         }
-        //实例化order表
-        $order=M('order');
-        if($order->create()) {
-            $result = $order->add();
+        //实例化after_sale表
+        $address=M('address');
+        if($address->create()) {
+            $result = $address->add();
             if ($result) {
                 $this->redirect('Carousel/index');
             } else {
@@ -66,17 +69,17 @@ class OrderController extends CommonController {
         }
      }
 
-     // 启用订单
+     // 启用收货地址
      public function enable()
      {
         $id = I('get.id');
-        $order = M('order');
+        $address = M('address');
         $data['is_enable']=1;
-            $obj = $order->create($data);
+            $obj = $address->create($data);
             if(!$obj){
-                $this->error($order->getError());
+                $this->error($address->getError());
             }else{
-                $result = $order->where("id = '$id'")->data($data)->save();
+                $result = $address->where("id = '$id'")->data($data)->save();
                 if ($result) {
                     $this->redirect('Carousel/index');
                 }else{
@@ -85,17 +88,17 @@ class OrderController extends CommonController {
             }
      }
 
-     // 停用订单
+     // 停用收货地址
      public function disable()
      {
         $id = I('get.id');
-        $order = M('order');
+        $address = M('address');
         $data['is_enable']=0;
-            $obj = $order->create($data);
+            $obj = $address->create($data);
             if(!$obj){
-                $this->error($order->getError());
+                $this->error($address->getError());
             }else{
-                $result = $order->where("id = '$id'")->data($data)->save();
+                $result = $address->where("id = '$id'")->data($data)->save();
                 if ($result) {
                     $this->redirect('Carousel/index');
                 }else{
@@ -108,15 +111,15 @@ class OrderController extends CommonController {
      */
     public function del(){
         $id=I('get.id');
-        $order=M('order');
+        $address=M('address');
         //查询要删除的信息
-        $data=$order->find($id);
+        $data=$address->find($id);
         if(!empty($data['img'])){
             $img=$data['img'];
             // $thumb=$data['thumb'];
         }
         //删除该条数据
-        $result=$order->delete($id);
+        $result=$address->delete($id);
         if($result){
             $unsimg="./Public/Admin/Uploads/".$img;
             // $unsthumb="./Public/Admin/Uploads/".$thumb;
@@ -133,15 +136,15 @@ class OrderController extends CommonController {
      */
      public function doDel(){
         $id=I('get.id');
-        $order=M('order');
+        $address=M('address');
         //查询要删除的信息
-        $data=$order->find($id);
+        $data=$address->find($id);
         if(!empty($data['img'])){
             $img=$data['img'];
             // $thumb=$data['thumb'];
         }
         //删除该条数据
-        $result=$order->delete($id);
+        $result=$address->delete($id);
         if($result){
             $unsimg="./Public/Admin/Uploads/".$img;
             // $unsthumb="./Public/Admin/Uploads/".$thumb;
@@ -153,17 +156,17 @@ class OrderController extends CommonController {
         }
     }
 
-     //修改订单信息
+     //修改收货地址信息
     public function modify($id)
     {
-         $order=M('order');
-         $orders=$order->where("id = '$id'")->find();
-         $this->assign('orders',$orders);
+         $address=M('address');
+         $addresses=$address->where("id = '$id'")->find();
+         $this->assign('addresses',$addresses);
          $this->display();
 
     }
 
-   //更新订单信息
+   //更新收货地址信息
     public function update($id)
     {
         if (IS_POST) {
@@ -201,13 +204,13 @@ class OrderController extends CommonController {
                     }
                 }
             }
-            //实例化order表
-            $order=M('order');
-            $obj = $order->create();
+            //实例化after_sale表
+            $address=M('address');
+            $obj = $address->create();
             if(!$obj){
-                $this->error($order->getError());
+                $this->error($address->getError());
             }else{
-                $result = $order->where("id = '$id'")->data($data)->save();
+                $result = $address->where("id = '$id'")->data($data)->save();
                 if ($result) {
                     $this->success('修改成功!',U('Carousel/index'));
                 }else{
