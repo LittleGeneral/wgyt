@@ -14,49 +14,10 @@ class CollectionController extends CommonController {
         		->field('c.id,c.createtime,c.status,u.cname,g.name,g.price,g.group_price,g.group_price,g.count,g.img,g.title,g.lasttime')
         		->order('createtime asc')
         		->select();
-        // dump($collections);die();
+        dump($collections);die();
         $this->assign('collections',$collections);
         $this->display();
 	}
-
-
-     // 上架
-     public function shelve()
-     {
-        $id = I('get.id');
-        $collection = M('collection');
-        $data['status']=1;
-            $obj = $collection->create($data);
-            if(!$obj){
-                $this->error($collection->getError());
-            }else{
-                $result = $collection->where("id = '$id'")->data($data)->save();
-                if ($result) {
-                    $this->redirect('Collection/index');
-                }else{
-                    $this->error('启用失败!');
-                }
-            }
-     }
-
-     // 下架
-     public function offShelve()
-     {
-        $id = I('get.id');
-        $collection = M('collection');
-        $data['status']=0;
-            $obj = $collection->create($data);
-            if(!$obj){
-                $this->error($collection->getError());
-            }else{
-                $result = $collection->where("id = '$id'")->data($data)->save();
-                if ($result) {
-                    $this->redirect('Collection/index');
-                }else{
-                    $this->error('启用失败!');
-                }
-            }
-     }
 
     /**
      * 删除操作

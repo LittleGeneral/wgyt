@@ -19,7 +19,7 @@ class AddressController extends ApiController{
         $address = M('address');
         $list = $address->alias('a')
                     ->join('LEFT JOIN users u ON u.id = a.user_id')
-                    // ->field('c.id,c.comments,c.star,c.time,u.cname,g.name')
+                    ->field('a.addr_id,a.code,a.is_default,a.is_district,u.cname,u.tel,u.img,u.address')
                     ->select();
         if ($list){
             $this->myApiPrint('success',200,$list);
@@ -28,9 +28,5 @@ class AddressController extends ApiController{
         }else{
             $this->myApiPrint('系统繁忙，请稍后再试',300);
         }
-
-
     }
-
-
 }

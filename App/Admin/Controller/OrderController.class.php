@@ -9,7 +9,9 @@ class OrderController extends CommonController {
     // 订单列表
     public function index(){
         $order = M('order');
-        $orders = $order->select();
+        $orders = $order->alias('o')
+                  ->join('LEFT JOIN ')
+                  ->select();
         $this->assign('orders',$orders);
         $this->display();
     }

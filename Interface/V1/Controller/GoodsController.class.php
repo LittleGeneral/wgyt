@@ -184,6 +184,27 @@ class GoodsController extends ApiController{
     }
 
 
+    /**
+     * 团购商品详情接口
+     * @DateTime 2016-10-09T11:37:01+0800
+     */
+    public function goods_details($id)
+    {
+        $detail = M('goods_detail');
+        $goods_detail = $detail->alias('d')
+                        ->join('LEFT JOIN goods g ON g.id = d.id')
+                        // ->field('d.id,d.teambuy_info,d.goods_img1,d.goods_img2,d.goods_img3,g.name,g.price,g.group_price,g.count,g.lasttime')
+                        ->where("d.id = '$id'")
+                        ->find();
+        if ($goods_detail){
+            $this->myApiPrint('success',200,$goods_detail);
+        }else if($goods_detail == null){
+            $this->myApiPrint('暂无数据',202);
+        }else{
+            $this->myApiPrint('系统繁忙，请稍后再试',300);
+        }
+
+    }
 
 
 

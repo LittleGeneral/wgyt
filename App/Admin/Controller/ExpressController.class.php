@@ -1,13 +1,14 @@
 <?php
  /*
-    *   物流快递控制器
+    *   承运控制器
     */
 namespace Admin\Controller;
 use Think\Controller;
 class ExpressController extends CommonController {
 
-    // 物流列表
-    public function index(){
+    // 承运列表
+    public function index()
+    {
         $express = M('express');
         $expresses = $express->alias('e')
                     ->join('LEFT JOIN carrier c ON e.id = c.carrier_id')
@@ -18,7 +19,7 @@ class ExpressController extends CommonController {
     }
 
     /**
-     * 添加物流
+     * 添加承运
      */
     public function add()
     {
@@ -26,7 +27,7 @@ class ExpressController extends CommonController {
     }
 
     /**
-     * 插入物流数据
+     * 插入承运数据
      */
     public function insert()
     {
@@ -69,7 +70,7 @@ class ExpressController extends CommonController {
         }
      }
 
-     // 启用物流
+     // 启用承运
      public function enable()
      {
         $id = I('get.id');
@@ -88,7 +89,7 @@ class ExpressController extends CommonController {
             }
      }
 
-     // 停用物流
+     // 停用承运
      public function disable()
      {
         $id = I('get.id');
@@ -156,7 +157,7 @@ class ExpressController extends CommonController {
         }
     }
 
-     //修改物流信息
+     //修改承运信息
     public function modify($id)
     {
          $express=M('express');
@@ -166,7 +167,7 @@ class ExpressController extends CommonController {
 
     }
 
-   //更新物流信息
+   //更新承运信息
     public function update($id)
     {
         if (IS_POST) {
