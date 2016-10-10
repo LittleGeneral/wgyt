@@ -193,7 +193,7 @@ class GoodsController extends ApiController{
         $detail = M('goods_detail');
         $goods_detail = $detail->alias('d')
                         ->join('LEFT JOIN goods g ON g.id = d.id')
-                        // ->field('d.id,d.teambuy_info,d.goods_img1,d.goods_img2,d.goods_img3,g.name,g.price,g.group_price,g.count,g.lasttime')
+                        ->field('d.id,d.teambuy_info,d.goods_img1,d.goods_img2,d.goods_img3,g.name,g.price,g.group_price,g.count,g.lasttime')
                         ->where("d.id = '$id'")
                         ->find();
         if ($goods_detail){

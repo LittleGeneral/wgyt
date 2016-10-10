@@ -14,10 +14,12 @@ class CollectionController extends CommonController {
         		->field('c.id,c.createtime,c.status,u.cname,g.name,g.price,g.group_price,g.group_price,g.count,g.img,g.title,g.lasttime')
         		->order('createtime asc')
         		->select();
-        dump($collections);die();
+        // dump($collections);die();
         $this->assign('collections',$collections);
         $this->display();
 	}
+
+
 
     /**
      * 删除操作

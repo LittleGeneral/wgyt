@@ -17,7 +17,7 @@ class BuildLiteBehavior {
         if(!defined('BUILD_LITE_FILE')) return ;
         $litefile   =   C('RUNTIME_LITE_FILE',null,RUNTIME_PATH.'lite.php');
         if(is_file($litefile)) return;
-        
+
         $defs       =   get_defined_constants(TRUE);
         $content    =   'namespace {$GLOBALS[\'_beginTime\'] = microtime(TRUE);';
         if(MEMORY_LIMIT_ON) {

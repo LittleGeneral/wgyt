@@ -22,7 +22,7 @@ class ParseTemplateBehavior {
         $_content           =   empty($_data['content'])?$_data['file']:$_data['content'];
         $_data['prefix']    =   !empty($_data['prefix'])?$_data['prefix']:C('TMPL_CACHE_PREFIX');
         if('think'==$engine){ // 采用Think模板引擎
-            if((!empty($_data['content']) && $this->checkContentCache($_data['content'],$_data['prefix'])) 
+            if((!empty($_data['content']) && $this->checkContentCache($_data['content'],$_data['prefix']))
                 ||  $this->checkCache($_data['file'],$_data['prefix'])) { // 缓存有效
                 //载入模版缓存文件
                 Storage::load(C('CACHE_PATH').$_data['prefix'].md5($_content).C('TMPL_CACHFILE_SUFFIX'),$_data['var']);
@@ -36,8 +36,8 @@ class ParseTemplateBehavior {
             if(strpos($engine,'\\')){
                 $class  =   $engine;
             }else{
-                $class   =  'Think\\Template\\Driver\\'.ucwords($engine);                
-            }            
+                $class   =  'Think\\Template\\Driver\\'.ucwords($engine);
+            }
             if(class_exists($class)) {
                 $tpl   =  new $class;
                 $tpl->fetch($_content,$_data['var']);
@@ -91,5 +91,5 @@ class ParseTemplateBehavior {
         }else{
             return false;
         }
-    }    
+    }
 }

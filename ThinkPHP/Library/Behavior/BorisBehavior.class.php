@@ -24,7 +24,7 @@ class BorisBehavior {
                 'Boris\CLIOptionsHandler'   => VENDOR_PATH . 'Boris/CLIOptionsHandler.php',
                 'Boris\ColoredInspector'    => VENDOR_PATH . 'Boris/ColoredInspector.php',
                 'Boris\DumpInspector'       => VENDOR_PATH . 'Boris/DumpInspector.php',
-                'Boris\EvalWorker'          => VENDOR_PATH . 'Boris/EvalWorker.php',    
+                'Boris\EvalWorker'          => VENDOR_PATH . 'Boris/EvalWorker.php',
                 'Boris\ExportInspector'     => VENDOR_PATH . 'Boris/ExportInspector.php',
                 'Boris\Inspector'           => VENDOR_PATH . 'Boris/Inspector.php',
                 'Boris\ReadlineClient'      => VENDOR_PATH . 'Boris/ReadlineClient.php',

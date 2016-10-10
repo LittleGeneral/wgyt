@@ -25,8 +25,6 @@ class LoginController extends Controller {
         $username = I('post.username');
         $pwd = I('post.password');
         $result = M('admin')->field('id,username,password')->find();
-        // dump(session('userName'));die();
-
         if ($username == $result['username'] && $pwd ==$result['password']) {
              // 登录成功，设置session
             session('uid', $result ['id']);
@@ -46,7 +44,7 @@ class LoginController extends Controller {
     public function logout() {
          // 清空所有session
         session(null);
-        redirect(U('Login/login'), 2, '正在退出登录...');
+        redirect(U('Login/login'));
     }
 
 }

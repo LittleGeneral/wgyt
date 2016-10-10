@@ -14,7 +14,7 @@ namespace Behavior;
  * @author   liu21st <liu21st@gmail.com>
  */
 class RobotCheckBehavior {
-    
+
     public function run(&$params) {
         // 机器人访问检测
         if(C('LIMIT_ROBOT_VISIT',null,true) && self::isRobot()) {

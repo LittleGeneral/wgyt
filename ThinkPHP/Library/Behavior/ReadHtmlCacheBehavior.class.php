@@ -14,6 +14,7 @@ use Think\Storage;
  * 系统行为扩展：静态缓存读取
  */
 class ReadHtmlCacheBehavior {
+
     // 行为扩展的执行入口必须是run
     public function run(&$params){
         // 开启静态缓存
@@ -51,7 +52,7 @@ class ReadHtmlCacheBehavior {
                 // 解读静态规则
                 $rule   = is_array($html)?$html[0]:$html;
                 // 以$_开头的系统变量
-                $callback = function($match){ 
+                $callback = function($match){
                     switch($match[1]){
                         case '_GET':        $var = $_GET[$match[2]]; break;
                         case '_POST':       $var = $_POST[$match[2]]; break;
@@ -80,7 +81,7 @@ class ReadHtmlCacheBehavior {
                 }else{
                     $cacheTime  =   $cacheTime;
                 }
-                
+
                 // 当前缓存文件
                 define('HTML_FILE_NAME',HTML_PATH . $rule.C('HTML_FILE_SUFFIX',null,'.html'));
                 return $cacheTime;

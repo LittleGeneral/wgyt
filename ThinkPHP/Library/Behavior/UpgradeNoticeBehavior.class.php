@@ -20,9 +20,9 @@ namespace Behavior;
  * </code>
  *
  * 2，将此文件放在应用的Lib/Behavior文件夹下。
- *注：在SAE上面使用时，以上两步可以省略 
+ *注：在SAE上面使用时，以上两步可以省略
  * 3，在config.php中配置：
- *  'UPGRADE_NOTICE_ON'=>true,//开启短信升级提醒功能 
+ *  'UPGRADE_NOTICE_ON'=>true,//开启短信升级提醒功能
  * 'UPGRADE_NOTICE_AKEY'=>'your akey',//SAE应用的AKEY，如果在SAE上使用可以不填
  * 'UPGRADE_NOTICE_SKEY'=>'your skey',//SAE应用的SKEY，如果在SAE上使用可以不填
  *'UPGRADE_NOTICE_MOBILE'=>'136456789',//接受短信的手机号
@@ -83,10 +83,10 @@ class UpgradeNoticeBehavior {
         }
         if (isset($ret['ApiBusError'])) {
             trace('errno:' . $ret['ApiBusError']['errcode'] . ',errmsg:' . $ret['ApiBusError']['errdesc'], '升级通知出错', 'NOTIC', true);
-            
+
             return false;
         }
-        
+
         return true;
     }
     private function send($url, $params = array() , $headers = array()) {
@@ -101,17 +101,17 @@ class UpgradeNoticeBehavior {
         $txt = curl_exec($ch);
         if (curl_errno($ch)) {
             trace(curl_error($ch) , '升级通知出错', 'NOTIC', true);
-            
+
             return false;
         }
         curl_close($ch);
         $ret = json_decode($txt, true);
         if (!$ret) {
             trace('接口[' . $url . ']返回格式不正确', '升级通知出错', 'NOTIC', true);
-            
+
             return false;
         }
-        
+
         return $ret;
     }
 }

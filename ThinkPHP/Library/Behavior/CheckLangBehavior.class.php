@@ -63,7 +63,7 @@ class CheckLangBehavior {
         $file   =  LANG_PATH.LANG_SET.'.php';
         if(is_file($file))
             L(include $file);
-        
+
         // 读取模块语言包
         $file   =   MODULE_PATH.'Lang/'.LANG_SET.'.php';
         if(is_file($file))
