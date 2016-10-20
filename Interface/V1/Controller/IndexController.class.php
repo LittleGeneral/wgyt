@@ -33,7 +33,6 @@ class IndexController extends ApiController{
    {
         $id = I('post.id');
         $where['id'] = $id;
-
         $owner = M('users');
         $resn = $owner->where($where)->field('id,tel,cname,usertype')->find();
         if (!$resn) {
