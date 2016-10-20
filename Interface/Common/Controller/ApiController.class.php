@@ -8,8 +8,7 @@ use Think\Controller;
 
 class ApiController extends Controller
 {
-    protected $userStuID = null;
-    protected $userTeaID = null;
+    protected $userID = null;
 
     public function _initialize()
     {

@@ -12,26 +12,30 @@ class IndexController extends ApiController{
         //模块初始化，重写父类方法，避免该模块进入token验证
     }
 
-   // 首页内容写入缓存
    public function index(){
-        $va = M('category')->where('id = 1')->cache('cache_category')->select();
-        $this->myApiPrint('','',$va);
+            //如果有缓存，则读取缓存数据
+        $cache_category = cache('cache_category');
+        if (!empty($cache_category)) {
+            $this->myApiPrint('','',$cache_category);
+        }else{
+           //如果没有缓存，则读取数据库当中的数据放入缓存
+            $category = M('category')->select();
+            $cache = cache('cache_category',$category,600);
+            if ($cache) {
+                $cache_category = cache('cache_category');
+                $this->myApiPrint('','',$cache_category);
+            }
+        }
     }
 
 
    public function Login()
    {
         $id = I('post.id');
-        // $pwd = I('post.pwd');
-        // $from = I('post.from','android');
-        // $password = md5($pwd);
-
-        // $where['password'] = $password;
         $where['id'] = $id;
 
         $owner = M('users');
         $resn = $owner->where($where)->field('id,tel,cname,usertype')->find();
-        // dump($resn);die();
         if (!$resn) {
             $this->myApiPrint('帐号密码错误',300);
         }
