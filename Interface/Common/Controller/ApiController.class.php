@@ -13,26 +13,18 @@ class ApiController extends Controller
 
     public function _initialize()
     {
-        // //验证token
-        // $token = I('request.token');
-        // $stu_user = I('request.stu_user');
-        // $tea_user = I('request.tea_user');
-        // if($stu_user)
-        // {
-        //     $vToken = myDes_decode($token,$stu_user);
-        //     $arrStr = explode('|',$vToken);
-        //     if($stu_user && $arrStr[0] === $stu_user) $this->userStuID = $arrStr[1];
-        //     else $this->myApiPrint('user name error !');
-        // }
-        // else if($tea_user)
-        // {
-        //     $tToken = myDes_decode($token,$tea_user);
-        //     $teaStr = explode('|',$tToken);
-        //     if($tea_user && $teaStr[0] === $tea_user) $this->userTeaID = $teaStr[1];
-        //     else $this->myApiPrint('user name error!');
-        // }
-        // else
-        //     $this->myApiPrint('user name error!');
+        //验证token
+        $token = I('request.token');
+        $cname = I('request.cname');
+        if($cname)
+        {
+            $vToken = myDes_decode($token,$cname);
+            $arrStr = explode('|',$vToken);
+            if($cname && $arrStr[0] === $cname) $this->userID = $arrStr[1];
+            else $this->myApiPrint('user name error !');
+        }else{
+            $this->myApiPrint('user name error!');
+        }
     }
 
     /*
