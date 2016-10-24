@@ -44,11 +44,12 @@ class IndexController extends ApiController{
             else
             $msg = 'success';
             $strToken = $id.'|'.$resn['id'];
-            $resn['token'] = myDes_encode($strToken,$id);
+            $resn['token'] = myDes_encode($strToken,$id);  //生成token
             $this->myApiPrint($msg,200,$resn);
         }
     }
 
+     // 测试token
      public function testToken()
     {
         $strToken='yk-mMEAzNP3cn1G4fj4MXQ==';
@@ -56,5 +57,11 @@ class IndexController extends ApiController{
         $this->myApiPrint($msg,200,$resn);
     }
 
-
+    //测试redis
+    public function testRedis()
+    {
+        $redis = new \Redis();
+        $redis->connect('127.0.0.1', 6379);
+        $this->myApiPrint('',200,$redis);
+    }
 }
