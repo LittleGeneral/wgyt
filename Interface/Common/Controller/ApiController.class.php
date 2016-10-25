@@ -4,6 +4,7 @@
  * Interface引用api模式，没有display等view的渲染和页面模版输出
  */
 namespace Common\Controller;
+// use Common\Common\Response;
 use Think\Controller;
 
 class ApiController extends Controller
@@ -26,6 +27,25 @@ class ApiController extends Controller
         }
     }
 
+    // app初始化 版本是否需要更新
+    public function init() {
+        $this->check();//检测版本信息
+        // 获取版本升级信息
+        $versionUpgrade = $this->getversionUpgrade($this->app['id']);
+        if($versionUpgrade) {
+            if($versionUpgrade['type'] && $this->params['version_id'] < $versionUpgrade['version_id']) {
+                $versionUpgrade['is_upload'] = $versionUpgrade['type'];
+            }else {
+                $versionUpgrade['is_upload'] = 0;
+            }
+            // $this->show(200, '版本升级信息获取成功', $versionUpgrade);
+            return $versionUpgrade;
+        } else {
+            return false;
+            // $this->show(400, '版本升级信息获取失败');
+        }
+    }
+
     protected $params;
     protected $app;
     public function check() {
@@ -42,39 +62,37 @@ class ApiController extends Controller
         $this->params['encrypt_did'] = $encryptDid = isset($_GET['encrypt_did']) ? $_GET['encrypt_did'] : '';
 
         if(!is_numeric($appId) || !is_numeric($versionId)) {
-            return Response::show(401, '参数不合法');
+            $this->show(401, '参数不合法');
+            // return Response::show(401, '参数不合法');
         }
         // 判断APP是否需要加密
         $this->app = $this->getApp($appId);
-        // $this->app = $this->getApp($app_id);
         if(!$this->app) {
-            return Response::show(402, 'app_id不存在');
+            $this->show(402, 'app_id不存在');
+            // return Response::show(402, 'app_id不存在');
         }
         if($this->app['is_encryption'] && $encryptDid != md5($did . $this ->app['key'])) {
-            return Response::show(403, '没有该权限');
+            $this->show(403, '没有该权限');
+            // return Response::show(403, '没有该权限');
         }
     }
 
+    // 获取app信息
     public function getApp($id) {
-        $sql = "select *
-                from `app`
-                where id = " . $id ."
-                and status = 1
-                limit 1";
-        $connect = Db::getInstance()->connect();
-        $result = mysql_query($sql, $connect);
-        return mysql_fetch_assoc($result);
+        $model = M('app');
+        $where = "id = '$id'";
+        $appData = $model->where($where)->find();
+        return $appData;
+        // $this->show(200,'success',$app1);
     }
 
+    // 获取app版本升级信息
     public function getversionUpgrade($appId) {
-        $sql = "select *
-                from `version_upgrade`
-                where app_id = " . $appId ."
-                and status = 1
-                limit 1";
-        $connect = Db::getInstance()->connect();
-        $result = mysql_query($sql, $connect);
-        return mysql_fetch_assoc($result);
+         $model = M('version_upgrade');
+        $where = "app_id = '$appId' and status = 1";
+        $appData = $model->where($where)->find();
+        return $appData;
+        // $this->show(200,'success',$appData);
     }
 
     /**
@@ -244,5 +262,108 @@ class ApiController extends Controller
         ksort($para);
         reset($para);
         return $para;
+    }
+
+
+    const JSON = "json";
+    /**
+    * 按综合方式输出通信数据
+    * @param integer $code 状态码
+    * @param string $message 提示信息
+    * @param array $data 数据
+    * @param string $judy_type(array) 数据类型
+    * return string
+    */
+    public static function show($code, $message = '', $data = array(), $type = self::JSON) {
+        if(!is_numeric($code)) {
+            return '';
+        }
+
+        $type = isset($_GET['format']) ? $_GET['format'] : self::JSON;
+
+        $result = array(
+            'code' => $code,
+            'message' => $message,
+            'data' => $data,
+        );
+
+        if($type == 'json') {
+            self::json($code, $message, $data);
+            exit;
+        } elseif($type == 'array') {
+            var_dump($result);
+        } elseif($type == 'xml') {
+            self::xmlEncode($code, $message, $data);
+            exit;
+        } else {
+            // TODO
+        }
+    }
+
+    /**
+    * 按json方式输出通信数据
+    * @param integer $code 状态码
+    * @param string $message 提示信息
+    * @param array $data 数据
+    * return string
+    */
+    public static function json($code, $message = '', $data = array()) {
+
+        if(!is_numeric($code)) {
+            return '';
+        }
+
+        $result = array(
+            'code' => $code,
+            'message' => $message,
+            'data' => $data
+        );
+
+        // echo json_encode($result);
+        echo json_encode($result,JSON_UNESCAPED_UNICODE);
+        exit;
+    }
+
+    /**
+    * 按xml方式输出通信数据
+    * @param integer $code 状态码
+    * @param string $message 提示信息
+    * @param array $data 数据
+    * return string
+    */
+    public static function xmlEncode($code, $message, $data = array()) {
+        if(!is_numeric($code)) {
+            return '';
+        }
+
+        $result = array(
+            'code' => $code,
+            'message' => $message,
+            'data' => $data,
+        );
+
+        header("Content-Type:text/xml");
+        $xml = "<?xml version='1.0' encoding='UTF-8'?>\n";
+        $xml .= "<root>\n";
+
+        $xml .= self::xmlToEncode($result);
+
+        $xml .= "</root>";
+        echo $xml;
+    }
+
+    // 将xml数据解析
+    public static function xmlToEncode($data) {
+        $xml = $attr = "";
+        foreach($data as $key => $value) {
+            if(is_numeric($key)) {
+                $attr = " id='{$key}'";
+                $key = "item";
+            }
+            $xml .= "<{$key}{$attr}>";
+            $xml .= is_array($value) ? self::xmlToEncode($value) : $value;
+            $xml .= "</{$key}>\n";
+        }
+        return $xml;
     }
 }

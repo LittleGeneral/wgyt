@@ -95,8 +95,8 @@ class Response {
         echo $xml;
     }
 
+    //将xml数据解析
     public static function xmlToEncode($data) {
-
         $xml = $attr = "";
         foreach($data as $key => $value) {
             if(is_numeric($key)) {
