@@ -49,17 +49,17 @@ class ApiController extends Controller
     protected $params;
     protected $app;
     public function check() {
-        // $this->params['app_id'] = $appId = isset($_POST['app_id']) ? $_POST['app_id'] : '';
-        // $this->params['version_id'] = $versionId = isset($_POST['version_id']) ? $_POST['version_id'] : '';
-        // $this->params['version_mini'] = $versionMini = isset($_POST['version_mini']) ? $_POST['version_mini'] : '';
-        // $this->params['did'] = $did = isset($_POST['did']) ? $_POST['did'] : '';
-        // $this->params['encrypt_did'] = $encryptDid = isset($_POST['encrypt_did']) ? $_POST['encrypt_did'] : '';
+        $this->params['app_id'] = $appId = isset($_POST['app_id']) ? $_POST['app_id'] : '';
+        $this->params['version_id'] = $versionId = isset($_POST['version_id']) ? $_POST['version_id'] : '';
+        $this->params['version_mini'] = $versionMini = isset($_POST['version_mini']) ? $_POST['version_mini'] : '';
+        $this->params['did'] = $did = isset($_POST['did']) ? $_POST['did'] : '';
+        $this->params['encrypt_did'] = $encryptDid = isset($_POST['encrypt_did']) ? $_POST['encrypt_did'] : '';
 
-        $this->params['app_id'] = $appId = isset($_GET['app_id']) ? $_GET['app_id'] : '';
-        $this->params['version_id'] = $versionId = isset($_GET['version_id']) ? $_GET['version_id'] : '';
-        $this->params['version_mini'] = $versionMini = isset($_GET['version_mini']) ? $_GET['version_mini'] : '';
-        $this->params['did'] = $did = isset($_GET['did']) ? $_GET['did'] : '';
-        $this->params['encrypt_did'] = $encryptDid = isset($_GET['encrypt_did']) ? $_GET['encrypt_did'] : '';
+        // $this->params['app_id'] = $appId = isset($_GET['app_id']) ? $_GET['app_id'] : '';
+        // $this->params['version_id'] = $versionId = isset($_GET['version_id']) ? $_GET['version_id'] : '';
+        // $this->params['version_mini'] = $versionMini = isset($_GET['version_mini']) ? $_GET['version_mini'] : '';
+        // $this->params['did'] = $did = isset($_GET['did']) ? $_GET['did'] : '';
+        // $this->params['encrypt_did'] = $encryptDid = isset($_GET['encrypt_did']) ? $_GET['encrypt_did'] : '';
 
         if(!is_numeric($appId) || !is_numeric($versionId)) {
             $this->show(401, '参数不合法');

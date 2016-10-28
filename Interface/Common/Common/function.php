@@ -226,3 +226,4 @@ function getpage($count,$pagesize = 10) {
     $p->lastSuffix = false; //最后一页不显示为总数
     return $p;
 }
+

@@ -1,6 +1,8 @@
 <?php
 /**
  * 公开接口API
+ * 分类，登录，版本，更新等
+ * 不需要验证用户身份token
  */
 namespace V1\Controller;
 
@@ -97,13 +99,6 @@ class IndexController extends ApiController{
         $this->myApiPrint($msg,200,$resn);
     }
 
-    //测试redis
-    public function testRedis()
-    {
-        $redis = new \Redis();
-        $redis->connect('127.0.0.1', 6379);
-        $this->myApiPrint('',200,$redis);
-    }
 
     //测试Response类 可返回json和xml数据类型
     public function testResponse()
@@ -151,9 +146,36 @@ class IndexController extends ApiController{
         }
     }
 
+    //测试redis
+    public function testRedis()
+    {
+        $redis = new \Redis();
+        $redis->connect('127.0.0.1', 6379);
+        echo "Connection to server sucessfully";
+             //查看服务是否运行
+       echo "Server is running: ";
+       $redis->ping();
+       // String数据类型
+       $redis->set('test','Carina2');
+       echo "Stored string in redis:: ".'<br>';
+       echo $redis->get('test').'<br>';
 
+       // list数据类型
+       $redis->lpush('tutorial-list', 'Redis');
+       $redis->lpush('tutorial-list', 'Mongodb');
+       $redis->lpush('tutorial-list', 'Mysql');
+       // 获取存储的数据并输出
+       $arList = $redis->lrange('tutorial-list', 0 ,5);
+       echo "Stored list in redis:: ".'<br>';
+       echo json_encode($arList).'<br>';
+       // var_dump($arList);
 
-
+       //连接本地的 Redis 服务
+       // 获取数据并输出
+       $arList2 = $redis->keys("*");
+       echo "Stored keys in redis:: ".'<br>';
+       echo json_encode($arList2);
+    }
 
 
 
